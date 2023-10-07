@@ -2,9 +2,9 @@ from quart import Quart, g
 from quart_schema import QuartSchema, validate_response
 
 from anunnaki_server.ext_manager import mn_blueprint
+from anunnaki_server.loader import loader_blueprint
 from anunnaki_server.ext_manager.repo import Repo
 from anunnaki_server.model import Result
-from anunnaki_server.loader import loader_blueprint
 
 import os
 import pathlib
@@ -15,7 +15,8 @@ app = Quart(__name__)
 app.config.update({
     "DATABASE": os.path.join(app.root_path, 'data/data.sqlite'),
     "EXTENSIONS": os.path.join(app.root_path, 'data/extensions'),
-    "REPO": Repo()
+    "REPO": Repo(),
+    "SOURCES": dict(), # Stores SourceManager instances
 })
 QuartSchema(app)
 
