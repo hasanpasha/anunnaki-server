@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS extensions(
+    id INTEGER NOT NULL PRIMARY KEY UNIQUE,
+    pkg TEXT NOT NULL,
+    name TEXT NOT NULL,
+    version TEXT NOT NULL,
+    lang TEXT NOT NULL,
+    base_url TEXT NOT NULL
+);

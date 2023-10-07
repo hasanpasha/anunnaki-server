@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "anunnaki-server"
+version = "0.1.0"
+description = ""
+authors = ["hasna pasha <38372270+hasanpasha@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "anunnaki_server", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "<3.12,>=3.8"
+quart = "^0.19.2"
+quart-schema = "^0.17.1"
+aiohttp = "^3.8.5"
+quart-db = "^0.6.2"
+aiosqlite = "^0.19.0"
+aiofiles = "^23.2.1"
+anunnaki-source = {path = "../anunnaki-source"}
+
+[tool.poetry.group.dev.dependencies]
+pytest-asyncio = "^0.21.1"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+filterwarnings = "ignore"
+log_cli = true
+log_cli_level = "error"
+
+[tool.poe.tasks.serve]
+cmd = "quart run"
+env = { QUART_APP = "anunnaki_server.app" }
+
+[tool.poe.tasks.init_db]
+script = "anunnaki_server.app:init_db"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

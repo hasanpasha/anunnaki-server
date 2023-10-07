@@ -1,0 +1,18 @@
+[
+    {
+        "base_url": "https://cinemana.shabakaty.com",
+        "id": 6766468217767473,
+        "lang": "en",
+        "name": "cinemana",
+        "pkg": "shabakaty_cinemana",
+        "version": "0.0.3"
+    },
+    {
+        "base_url": "https://cinemana.shabakaty.com",
+        "id": 6691787518294698,
+        "lang": "ar",
+        "name": "cinemana",
+        "pkg": "shabakaty_cinemana",
+        "version": "0.0.3"
+    }
+]
