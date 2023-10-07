@@ -14,7 +14,7 @@ aiohttp = "^3.8.5"
 quart-db = "^0.6.2"
 aiosqlite = "^0.19.0"
 aiofiles = "^23.2.1"
-anunnaki-source = {path = "../anunnaki-source"}
+anunnaki-source = {git = "https://github.com/hasanpasha/anunnaki-source.git"}
 
 [tool.poetry.group.dev.dependencies]
 pytest-asyncio = "^0.21.1"
