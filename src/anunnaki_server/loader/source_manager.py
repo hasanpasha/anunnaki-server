@@ -62,8 +62,10 @@ class SourceManager:
             arg_value = dict_args.get(param_name)
                     
             arg_type = param_type.annotation
-            if arg_type == inspect._empty:
-                raise Exception(f"The called method parameter `{param_name}` doesn't specify a type")
+            if arg_value is None:
+                if arg_type == inspect._empty:
+                    raise Exception(f"The called method parameter `{param_name}` doesn't specify a type")
+                continue
 
             if arg_type in self.source_models:
                 value = arg_type.model_validate(arg_value)
