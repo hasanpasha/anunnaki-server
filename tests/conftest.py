@@ -5,14 +5,14 @@ import pytest
 import time
 import multiprocessing
 from http.server import HTTPServer, SimpleHTTPRequestHandler
-from aiohttp import ClientSession
+
 
 class DefaultHandler(SimpleHTTPRequestHandler):
-    def __init__(self, request, client_address, server, *, directory: str | None = None) -> None:
+    def __init__(self, request, client_address, server, *, directory: str = None) -> None:
         super().__init__(request, client_address, server, directory="tests/fake_data/fake_data_no_update")
 
 class DefaultHandlerWithUpdate(SimpleHTTPRequestHandler):
-    def __init__(self, request, client_address, server, *, directory: str | None = None) -> None:
+    def __init__(self, request, client_address, server, *, directory: str = None) -> None:
         super().__init__(request, client_address, server, directory="tests/fake_data/fake_data_with_update")
 
 

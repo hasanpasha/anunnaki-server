@@ -1,5 +1,6 @@
 import os
 import shutil
+from typing import Tuple
 
 def delete_folder(path: str) -> bool:
     """
@@ -18,7 +19,7 @@ def delete_folder(path: str) -> bool:
             return True
     return True
 
-def serialize_version(version: str) -> tuple[int, int, int]:
+def serialize_version(version: str) -> Tuple[int, int, int]:
     """
     Convert version string to tuple of integers
     
