@@ -1,4 +1,4 @@
-from anunnaki_server.app import app, init_db
+from anunnaki_server.app import app
 from anunnaki_server.ext_manager.repo import Repo
 
 import pytest
@@ -20,10 +20,9 @@ class DefaultHandlerWithUpdate(SimpleHTTPRequestHandler):
 async def init_app(tmpdir):
     app.config['DATABASE'] = str(tmpdir.join('data.db'))
     app.config['EXTENSIONS'] = str(tmpdir.join('extensions'))
-    init_db()
     async with app.test_app() as test_app:
         yield test_app
-
+    
 @pytest.fixture(autouse=True, scope="session")
 def setup_fake_repos():
     ports = [8080, 8081]

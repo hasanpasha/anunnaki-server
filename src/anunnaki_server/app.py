@@ -8,7 +8,7 @@ from anunnaki_server.model import Result
 
 import os
 import pathlib
-from sqlite3 import dbapi2 as sqlite3
+import aiosqlite
 import aiohttp
 
 app = Quart(__name__)
@@ -23,26 +23,22 @@ QuartSchema(app)
 app.register_blueprint(mn_blueprint, url_prefix="/extensions")
 app.register_blueprint(loader_blueprint, url_prefix="/<int:id>")
 
-def connect_db():
+async def connect_db() -> aiosqlite.Connection:
     db_path = app.config.get("DATABASE")
     db_dir = pathlib.Path(db_path).parent
     if not os.path.exists(db_dir):
         os.makedirs(db_dir)
 
-    engine = sqlite3.connect(db_path)
-    engine.row_factory = sqlite3.Row
+    engine = await aiosqlite.connect(db_path)
+    engine.row_factory = aiosqlite.Row
     return engine
 
-def init_db():
-    db = connect_db()
+async def init_db() -> aiosqlite.Connection:
+    db = await connect_db()
     with open(os.path.join(app.root_path, 'schema.sql'), mode="r") as file_:
-        db.cursor().execute(file_.read())
-    db.commit()
-
-@app.before_request
-async def set_db(): 
-    if not hasattr(app, "sqlite_db"):
-        g.sqlite_db = connect_db()
+        await db.execute(file_.read())
+        await db.commit()
+    return db
 
 @app.errorhandler(500)
 @validate_response(Result)
@@ -62,10 +58,12 @@ async def bad_request(error):
 @app.before_serving
 async def startup():
     app.client_session = aiohttp.ClientSession()
+    app.sqlite_db = await init_db()
 
 @app.after_serving
 async def teardown():
     await app.client_session.close()
+    await app.sqlite_db.close()
 
 @app.get('/')
 async def index():

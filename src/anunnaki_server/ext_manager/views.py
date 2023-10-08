@@ -12,7 +12,7 @@ from aiohttp import ClientSession
 # TODO: add swagger documenting
 @validate_response(ExtensionList)
 async def extensions_list():
-    installed_extensions = db.extensions_list()
+    installed_extensions = await db.extensions_list()
     result_extensions: List[Extension] = None
 
     args = request.args

@@ -18,7 +18,7 @@ async def get_extensions_from_repo(repo: Repo = None) -> List[Extension]:
     """
     if repo is None:
         repo: Repo = current_app.config.get("REPO")
-    installed_extensions = db.extensions_list()
+    installed_extensions = await db.extensions_list()
     
     session: ClientSession = current_app.client_session 
     async with session.get(repo.index_path()) as resp:
@@ -69,7 +69,7 @@ async def extension_install(extension: Extension) -> Result:
         if not (await download_extension(extension)):
             abort(501)
 
-        if not db.extension_add(extension):
+        if not (await db.extension_add(extension)):
             abort(502)
 
         return Result(success=True)
@@ -82,7 +82,7 @@ async def extension_uninstall(extension: Extension) -> Result:
     if not delete_extension_folder(extension):
         abort(500)
 
-    if not db.extension_remove(extension):
+    if not (await db.extension_remove(extension)):
         abort(500)
     
     return Result(success=True)
@@ -104,7 +104,7 @@ async def extension_update(extension: Extension) -> Result:
         if not (await download_extension(extension)):
             abort(500)
 
-        if not db.extension_update(extension):
+        if not (await db.extension_update(extension)):
             abort(500)
 
         return Result(success=True)

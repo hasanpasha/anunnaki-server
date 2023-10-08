@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "anunnaki-server"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["hasna pasha <38372270+hasanpasha@users.noreply.github.com>"]
 readme = "README.md"
@@ -29,9 +29,6 @@ log_cli_level = "error"
 [tool.poe.tasks.serve]
 cmd = "quart run"
 env = { QUART_APP = "anunnaki_server.app" }
-
-[tool.poe.tasks.init_db]
-script = "anunnaki_server.app:init_db"
 
 [build-system]
 requires = ["poetry-core"]

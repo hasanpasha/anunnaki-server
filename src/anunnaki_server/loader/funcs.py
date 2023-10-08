@@ -9,8 +9,8 @@ import importlib
 from aiohttp import ClientSession
 
 
-def get_extension_by_id(id: int) -> Extension:
-    extensions = db.extensions_list()
+async def get_extension_by_id(id: int) -> Extension:
+    extensions = await db.extensions_list()
     for ext in extensions:
         if ext.id == id:
             return ext
@@ -35,7 +35,7 @@ async def source_load(ext: Extension) -> SourceManager:
         return SourceManager(name=ext.name, id=ext.id, type=type(klass), klass=klass)
 
 async def source_load_by_id(id: int) -> SourceManager:
-    ext = get_extension_by_id(id)
+    ext = await get_extension_by_id(id)
     if ext is None:
         return None
     
