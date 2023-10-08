@@ -6,6 +6,7 @@ from anunnaki_server.loader.source_manager import SourceManager
 
 import sys
 import importlib
+from aiohttp import ClientSession
 
 
 def get_extension_by_id(id: int) -> Extension:
@@ -15,6 +16,8 @@ def get_extension_by_id(id: int) -> Extension:
             return ext
 
 async def source_load(ext: Extension) -> SourceManager:
+    session: ClientSession = current_app.client_session
+
     extensions_path = current_app.config.get("EXTENSIONS")
     if extensions_path not in sys.path:
         sys.path.append(extensions_path)
@@ -22,9 +25,10 @@ async def source_load(ext: Extension) -> SourceManager:
     ext_mod_path = f"{ext.lang}.{ext.pkg}"
     try:
         module = importlib.import_module(ext_mod_path)
-        klass = module.load_extension()
+        klass = module.get_source_class(session)
+        
         # init sessions
-        await klass.init_session()
+        # await klass.init_session()
     except:
         return None
     else:
